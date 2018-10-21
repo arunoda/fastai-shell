@@ -10,12 +10,14 @@ curl https://conda.ml | bash
 
 source ~/.bashrc
 conda create -y --name fastai-v1
+source ~/.bashrc
 source activate fastai-v1
 
 conda install -y -c pytorch pytorch-nightly cuda92
 conda install -y -c fastai torchvision-nightly
 conda install -y -c fastai fastai
 
+source ~/.bashrc
 source activate fastai-v1
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
 
@@ -28,14 +30,12 @@ Description=jupyter
 After=network.target
 StartLimitBurst=5
 StartLimitIntervalSec=10
-
 [Service]
 Type=simple
 Restart=always
 RestartSec=1
 User=$USER
 ExecStart=$HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME
-
 [Install]
 WantedBy=multi-user.target
 EOL
