@@ -6,11 +6,13 @@ sudo apt-get -y upgrade
 sudo add-apt-repository -y ppa:graphics-drivers/ppa
 sudo apt install -y nvidia-driver-396
 
+# there's no python command in this box, this will fix ti.
+# that's because the following conda installation code requries it.
+sudo ln -s /usr/bin/python3 /usr/bin/python
 curl https://conda.ml | bash
 
 source ~/.bashrc
 conda create -y --name fastai-v1
-source ~/.bashrc
 source activate fastai-v1
 
 conda install -y -c pytorch pytorch-nightly cuda92
