@@ -41,7 +41,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=$USER
-ExecStart=$HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME
+ExecStart=$HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME '--KernelSpecManager.whitelist=["fastai-v1"]'
 
 [Install]
 WantedBy=multi-user.target
