@@ -11,7 +11,10 @@ sudo apt install -y nvidia-driver-396
 sudo ln -s /usr/bin/python3 /usr/bin/python
 curl https://conda.ml | bash
 
-source ~/.bashrc
+# This will allow us to use conda.
+# source ~/.bashrc has no effect here: https://stackoverflow.com/a/43660876/457224
+export PATH="$HOME/anaconda3/bin:$PATH"
+
 conda create -y --name fastai-v1
 source activate fastai-v1
 
@@ -19,7 +22,6 @@ conda install -y -c pytorch pytorch-nightly cuda92
 conda install -y -c fastai torchvision-nightly
 conda install -y -c fastai fastai
 
-source ~/.bashrc
 source activate fastai-v1
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
 
