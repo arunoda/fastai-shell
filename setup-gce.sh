@@ -41,7 +41,8 @@ Type=simple
 Restart=always
 RestartSec=1
 User=$USER
-ExecStart=$HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME
+ExecStart=/bin/bash -c "source $HOME/anaconda3/bin/activate fastai-v1 && $HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME"
+
 [Install]
 WantedBy=multi-user.target
 EOL
