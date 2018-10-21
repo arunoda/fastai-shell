@@ -28,6 +28,7 @@ source activate fastai-v1
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
 
 ## make the above as the default kernal
+mkdir -p ~/.jupyter
 cat > ~/.jupyter/jupyter_notebook_config.json <<EOL
 {
   "MultiKernelManager": {
