@@ -6,10 +6,11 @@ sudo apt-get -y upgrade
 sudo add-apt-repository -y ppa:graphics-drivers/ppa
 sudo apt install -y nvidia-driver-396
 
-# there's no python command in this box, this will fix ti.
-# that's because the following conda installation code requries it.
-sudo ln -s /usr/bin/python3 /usr/bin/python
+# This will use python command at the end and there's no such command.
+# So, we need to ignore that command.
+set +e
 curl https://conda.ml | bash
+set -e
 
 # This will allow us to use conda.
 # source ~/.bashrc has no effect here: https://stackoverflow.com/a/43660876/457224
