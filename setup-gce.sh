@@ -27,6 +27,15 @@ conda install -y -c fastai fastai
 source activate fastai-v1
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
 
+## make the above as the default kernal
+cat > ~/.jupyter/jupyter_notebook_config.json <<EOL
+{
+  "MultiKernelManager": {
+    "default_kernel_name": "fastai-v1"
+  }
+}
+EOL
+
 git clone https://github.com/fastai/course-v3.git
 
 ## Install the start script
@@ -41,7 +50,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=$USER
-ExecStart=/bin/bash -c "source $HOME/anaconda3/bin/activate fastai-v1 && $HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME"
+ExecStart=$HOME/anaconda3/bin/jupyter notebook --ip 0.0.0.0 --notebook-dir $HOME
 
 [Install]
 WantedBy=multi-user.target
