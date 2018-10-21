@@ -84,8 +84,4 @@ EOL
 sudo mv /tmp/onboot.service /lib/systemd/system/onboot.service
 sudo systemctl enable onboot.service
 
-echo "------------------------------"
-echo "ENTER THE PASSWORD FOR JUPYTER"
-echo "------------------------------"
-jupyter notebook password
 sudo reboot
