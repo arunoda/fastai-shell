@@ -51,4 +51,18 @@ sudo mv /tmp/jupyter.service /lib/systemd/system/jupyter.service
 sudo systemctl start jupyter.service
 sudo systemctl enable jupyter.service
 
+## Add the update fastai script
+cat > ~/update-fastai.sh <<EOL
+#!/bin/bash
+
+source activate fastai-v1
+conda update -y -c pytorch pytorch-nightly cuda92
+conda update -y -c fastai torchvision-nightly
+conda update -y -c fastai fastai
+
+sudo systemctl restart jupyter
+EOL
+
+chmod +x ~/update-fastai.sh
+
 sudo reboot
