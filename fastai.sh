@@ -14,7 +14,7 @@ use-zone() {
   echo "Availability zone updated to '$zone'"
 }
 
-network () {
+create_network () {
   set +e
   has_network=$(gcloud compute --project=$DEVSHELL_PROJECT_ID networks list | grep -c fastai-net)
   set -e
@@ -23,6 +23,64 @@ network () {
     gcloud compute --project=$DEVSHELL_PROJECT_ID networks create fastai-net --subnet-mode=auto
     gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules create allow-all --direction=INGRESS --priority=1000 --network=fastai-net --action=ALLOW --rules=all --source-ranges=0.0.0.0/0
   fi 
+}
+
+delete_network () {
+  set +e
+  has_network=$(gcloud compute --project=$DEVSHELL_PROJECT_ID networks list | grep -c fastai-net)
+  set -e
+
+  if [[ "$has_network" == "0" ]]; then
+    gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules -q delete allow-all
+    gcloud compute --project=$DEVSHELL_PROJECT_ID networks delete -q fastai-net
+  fi
+}
+
+create_boot_instance () {
+  set +e
+  has_disk=$(gcloud compute --project=$DEVSHELL_PROJECT_ID disks list | grep -c fastai-boot-1)
+  set -e
+
+  if [[ "$has_disk" == "0" ]]; then
+    gcloud compute instances create fastai-boot-1 \
+      --project=$DEVSHELL_PROJECT_ID \
+      --zone=$current_zone \
+      --subnet=fastai-net \
+      --machine-type="n1-standard-4" \
+      --accelerator="type=nvidia-tesla-k80,count=1" \
+      --image-family="pytorch-1-0-cu92-experimental" \
+      --image-project=deeplearning-platform-release \
+      --maintenance-policy=TERMINATE \
+      --boot-disk-size=50GB \
+      --boot-disk-type=pd-ssd \
+      --boot-disk-device-name=fastai-boot-1 \
+      --no-boot-disk-auto-delete \
+      --metadata="install-nvidia-driver=True" \
+      --preemptible
+  else
+    echo "There's an existing boot disk. Try 'fastai start' or 'fastai destroy'"
+    exit 1
+  fi
+}
+
+delete_boot_instance () {
+  set +e
+  count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep -c fastai-boot-1)
+  set -e
+
+  if [[ "$count" == "1" ]]; then
+    gcloud compute --project=$DEVSHELL_PROJECT_ID -q instances delete fastai-boot-1 --zone=$current_zone
+  fi
+}
+
+delete_boot_disk () {
+  set +e
+  count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID disks list | grep -c fastai-boot-1)
+  set -e
+
+  if [[ "$count" == "1" ]]; then
+    gcloud compute --project=$DEVSHELL_PROJECT_ID -q disks delete fastai-boot-1 --zone=$current_zone
+  fi
 }
 
 start() {
@@ -51,10 +109,9 @@ kill () {
   gcloud compute instances delete fastai --project=$DEVSHELL_PROJECT_ID --zone=$current_zone
 }
 
-destroy () {
-  gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules -q delete allow-all
-  gcloud compute --project=$DEVSHELL_PROJECT_ID networks delete -q fastai-net
-}
+# destroy () {
+  
+# }
 
 help() {
   echo ""
