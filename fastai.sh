@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -f ~/.fastai-zone ]; then
   current_zone=$(cat ~/.fastai-zone)
 else
@@ -10,6 +12,17 @@ use-zone() {
   zone=$1
   echo $zone > ~/.fastai-zone
   echo "Availability zone updated to '$zone'"
+}
+
+network () {
+  set +e
+  has_network=$(gcloud compute --project=$DEVSHELL_PROJECT_ID networks list | grep -c fastai-net)
+  set -e
+
+  if [[ "$has_network" == "0" ]]; then
+    gcloud compute --project=$DEVSHELL_PROJECT_ID networks create fastai-net --subnet-mode=auto
+    gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules create allow-all --direction=INGRESS --priority=1000 --network=fastai-net --action=ALLOW --rules=all --source-ranges=0.0.0.0/0
+  fi 
 }
 
 start() {
@@ -36,6 +49,11 @@ nogpu () {
 
 kill () {
   gcloud compute instances delete fastai --project=$DEVSHELL_PROJECT_ID --zone=$current_zone
+}
+
+destroy () {
+  gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules -q delete allow-all
+  gcloud compute --project=$DEVSHELL_PROJECT_ID networks delete -q fastai-net
 }
 
 help() {
