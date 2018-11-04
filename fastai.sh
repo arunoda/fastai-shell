@@ -8,8 +8,53 @@ else
   current_zone='us-west1-b'
 fi
 
-use-zone() {
+create_snapshot () {
+  gcloud compute --project=$DEVSHELL_PROJECT_ID disks snapshot fastai-boot-1 --zone=$current_zone --snapshot-names=fastai-boot-1
+}
+
+delete_snapshot () {
+  set +e
+  snapshot_count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID snapshots list | grep -c fastai-boot-1)
+  set -e
+
+  if [[ "$snapshot_count" == "1" ]]; then
+    gcloud compute --project=$DEVSHELL_PROJECT_ID snapshots -q delete fastai-boot-1
+  fi
+}
+
+create_disk_from_snapshot () {
+  gcloud compute --project=$DEVSHELL_PROJECT_ID disks create fastai-boot-1 --zone=$zone --type=pd-ssd --source-snapshot=fastai-boot-1 --size=50GB
+}
+
+switch-to () {
   zone=$1
+  echo "Kill the current instance, if exists"
+  kill
+
+  set +e
+  disk_count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID disks list | grep -c fastai-boot-1)
+  set -e
+
+  ## If there's a disk, we need to move it to the target zone
+  if [[ "$disk_count" == "1" ]]; then
+    # Create the snapshot
+    echo "Creating a snapshot for the existing disk"
+    delete_snapshot
+    create_snapshot
+
+    # Delete the existing disk
+    echo "Deleting the current disk"
+    delete_boot_disk
+
+    # Create the disk on the target zone based on the snapshot
+    echo "Creating a disk in $zone based on the snapshot"
+    create_disk_from_snapshot
+
+    # Delete the snapshot
+    echo "Deleting the snapshot"
+    delete_snapshot
+  fi
+
   echo $zone > ~/.fastai-zone
   echo "Availability zone updated to '$zone'"
 }
@@ -56,7 +101,7 @@ create_boot_instance () {
       --zone=$current_zone \
       --subnet=fastai-net \
       --network-tier=PREMIUM \
-      --machine-type="n1-standard-4" \
+      --machine-type="n1-highcpu-8" \
       --accelerator="type=nvidia-tesla-k80,count=1" \
       --image-family="pytorch-1-0-cu92-experimental" \
       --image-project=deeplearning-platform-release \
@@ -248,6 +293,7 @@ destroy () {
   delete_boot_instance
   kill
   delete_boot_disk
+  delete_snapshot
 }
 
 help() {
