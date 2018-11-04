@@ -21,22 +21,26 @@ EOL
 sudo mv /tmp/jupyter.service /lib/systemd/system/jupyter.service
 
 ## Add the update fastai script
-cat > ~/update-fastai.sh <<EOL
+cat > /tmp/update-fastai.sh <<EOL
 #!/bin/bash
 
-conda update -y -c pytorch pytorch-nightly cuda92
-conda update -y -c fastai torchvision-nightly
-conda update -y -c fastai fastai
+/opt/anaconda3/bin/conda update -y -c pytorch pytorch-nightly cuda92
+/opt/anaconda3/bin/conda update -y -c fastai torchvision-nightly
+/opt/anaconda3/bin/conda update -y -c fastai fastai
 
-cd ~/fastai/course-v3
+cd /home/jupyter/fastai/course-v3
 git checkout .
 git checkout master
 git pull origin master
 EOL
-chmod +x ~/update-fastai.sh
+sudo mv /tmp/update-fastai.sh /home/jupyter/update-fastai.sh
+sudo chown jupyter /home/jupyter/update-fastai.sh
+sudo chmod +x /home/jupyter/update-fastai.sh
+
 
 ## Symlink fastai to homepage
-ln -s ~/tutorials/fastai ~/fastai
+sudo ln -s /home/jupyter/tutorials/fastai /home/jupyter/fastai
+sudo chown jupyter /home/jupyter/fastai
 
 ## Update fastai
-~/update-fastai.sh
+sudo /home/jupyter/update-fastai.sh
