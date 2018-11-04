@@ -44,3 +44,4 @@ sudo chown jupyter /home/jupyter/fastai
 
 ## Update fastai
 sudo /home/jupyter/update-fastai.sh
+sudo chown -R jupyter /home/jupyter/fastai/course-v3
