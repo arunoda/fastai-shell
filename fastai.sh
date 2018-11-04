@@ -65,8 +65,7 @@ create_boot_instance () {
       --boot-disk-type=pd-ssd \
       --boot-disk-device-name=fastai-boot-1 \
       --no-boot-disk-auto-delete \
-      --metadata="install-nvidia-driver=True" \
-      --preemptible
+      --metadata="install-nvidia-driver=True"
   else
     echo "There's an existing boot disk. Try 'fastai start' or 'fastai destroy'"
     exit 1
@@ -98,18 +97,17 @@ wait_for_ssh () {
 
   while :
   do
-    echo " trying again"
     set +e
     gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone $instance_name -- "echo 'SSH is ready'"
     exit_code=$?
+    set -e
+
     if [[ "$exit_code" == "0" ]]; then
       break
     fi
-    set -e
     sleep 1
+    echo "Trying again"
   done
-
-  echo "."
 }
 
 wait_for_command () {
@@ -119,13 +117,15 @@ wait_for_command () {
   while :
   do
     echo -ne "."
+
     set +e
     gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone $instance_name -- "$command" > /dev/null 2>&1
     exit_code=$?
+    set -e
+
     if [[ "$exit_code" == "0" ]]; then
       break
     fi
-    set -e
     sleep 1
   done
 
@@ -146,7 +146,8 @@ create () {
   wait_for_command "fastai-boot-1" "nvidia-smi | grep K80"
 
   echo "Setting up the instance"
-  gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone "fastai-boot-1" -- "curl https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-instance.sh | bash"
+  setup_script="https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-instance.sh"
+  gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone "fastai-boot-1" -- "curl $setup_script > /tmp/setup.sh && bash /tmp/setup.sh"
 
   echo "Deleting the boot instance"
   delete_boot_instance

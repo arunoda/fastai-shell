@@ -28,7 +28,7 @@ cat > /tmp/update-fastai.sh <<EOL
 /opt/anaconda3/bin/conda update -y -c fastai torchvision-nightly
 /opt/anaconda3/bin/conda update -y -c fastai fastai
 
-cd /home/jupyter/fastai/course-v3
+cd /home/jupyter/tutorials/fastai/course-v3
 git checkout .
 git checkout master
 git pull origin master
@@ -37,11 +37,6 @@ sudo mv /tmp/update-fastai.sh /home/jupyter/update-fastai.sh
 sudo chown jupyter /home/jupyter/update-fastai.sh
 sudo chmod +x /home/jupyter/update-fastai.sh
 
-
-## Symlink fastai to homepage
-sudo ln -s /home/jupyter/tutorials/fastai /home/jupyter/fastai
-sudo chown jupyter /home/jupyter/fastai
-
 ## Update fastai
 sudo /home/jupyter/update-fastai.sh
-sudo chown -R jupyter /home/jupyter/fastai/course-v3
+sudo chown -R jupyter /home/jupyter/tutorials/fastai/course-v3
