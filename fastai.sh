@@ -83,6 +83,40 @@ delete_boot_disk () {
   fi
 }
 
+wait_for_command () {
+  instance_name=$1
+  command=$2
+
+  while :
+  do
+    echo -ne "."
+    set +e
+    gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone $instance_name -- "$command" > /dev/null 2>&1
+    exit_code=$?
+    if [[ "$exit_code" == "0" ]]; then
+      break
+    fi
+    set -e
+    sleep 1
+  done
+
+  echo "."
+}
+
+create () {
+  echo "Ensure fastai network"
+  create_network
+
+  echo "Creating the boot instance"
+  create_boot_instance
+
+  echo -ne "Waiting for the Nvidia Driver "
+  wait_for_command "fastai-boot-1" "nvidia-smi | grep K80"
+
+  echo -ne "Waiting for Jupyter "
+  wait_for_command "fastai-boot-1" "curl http://localhost:8080"
+}
+
 start() {
   machine_type=$1
   gpu_type=$2
@@ -109,9 +143,10 @@ kill () {
   gcloud compute instances delete fastai --project=$DEVSHELL_PROJECT_ID --zone=$current_zone
 }
 
-# destroy () {
-  
-# }
+destroy () {
+  delete_boot_instance
+  delete_boot_disk
+}
 
 help() {
   echo ""
