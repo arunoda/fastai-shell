@@ -157,12 +157,46 @@ create () {
   echo ""
 }
 
+show_jupyter_link () {
+  echo -ne "Waiting for Jupyter "
+  wait_for_command "fastai-1" "curl http://localhost:8080"
+
+  external_ip=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep fastai-1 | sed 's/  */ /g' | cut -d ' ' -f6)
+  echo "Access notebooks via http://${external_ip}:8080"
+}
+
 start_instance() {
   machine_type=$1
   gpu_type=$2
 
+  set +e
+  instance_count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep -c fastai-1)
+  set -e
+
+  # If the machine already started, simply show the start script
+  if [[ "$instance_count" == "1" ]]; then
+    echo "The fastai instance is already started"
+    echo "To change the instance type, first kill it with 'fastai kill'"
+    echo "Otherwise here's the URL:"
+    show_jupyter_link
+    return 0
+  fi
+
   echo "Creating instance"
-  gcloud compute instances create fastai-1 \
+
+  if [[ "$gpu_type" == "nogpu" ]]; then
+    gcloud compute instances create fastai-1 \
+      --project=$DEVSHELL_PROJECT_ID \
+      --zone=$current_zone \
+      --subnet=fastai-net \
+      --network-tier=PREMIUM \
+      --machine-type=$machine_type\
+      --no-restart-on-failure \
+      --maintenance-policy=TERMINATE \
+      --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes \
+      --preemptible
+  else
+    gcloud compute instances create fastai-1 \
       --project=$DEVSHELL_PROJECT_ID \
       --zone=$current_zone \
       --subnet=fastai-net \
@@ -173,9 +207,9 @@ start_instance() {
       --maintenance-policy=TERMINATE \
       --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes \
       --preemptible
+  fi
 
-  echo -ne "Waiting for Jupyter "
-  wait_for_command "fastai-1" "curl http://localhost:8080"
+  show_jupyter_link
 }
 
 v100 () {
@@ -195,28 +229,23 @@ k80 () {
 }
 
 nogpu () {
-  echo "Creating instance"
-  gcloud compute instances create fastai-boot-1 \
-    --project=$DEVSHELL_PROJECT_ID \
-    --zone=$current_zone \
-    --subnet=fastai-net \
-    --network-tier=PREMIUM \
-    --machine-type=n1-standard-1 \
-    --no-restart-on-failure \
-    --maintenance-policy=TERMINATE \
-    --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes \
-    --preemptible
-
-  echo -ne "Waiting for Jupyter "
-  wait_for_command "fastai-1" "curl http://localhost:8080"
+  start_instance "n1-standard-4" "nogpu"
 }
 
 kill () {
-  gcloud compute instances delete fastai-1 --project=$DEVSHELL_PROJECT_ID --zone=$current_zone
+  set +e
+  instance_count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep -c fastai-1)
+  set -e
+
+  # If the machine already started, simply show the start script
+  if [[ "$instance_count" == "1" ]]; then
+    gcloud compute instances delete fastai-1 -q --project=$DEVSHELL_PROJECT_ID --zone=$current_zone
+  fi
 }
 
 destroy () {
   delete_boot_instance
+  kill
   delete_boot_disk
 }
 
