@@ -46,6 +46,14 @@ create_disk_from_snapshot () {
   gcloud compute --project=$DEVSHELL_PROJECT_ID disks create fastai-boot-1 --zone=$zone --type=pd-ssd --source-snapshot=fastai-boot-1 --size=50GB
 }
 
+list-zones () {
+  echo ""
+  for z in "${!GPUS_IN_ZONES[@]}"; do
+    echo " * $z (available gpus: ${GPUS_IN_ZONES[$z]})"
+  done
+  echo ""
+}
+
 switch-to () {
   zone=$1
 
@@ -357,14 +365,16 @@ destroy () {
 
 help() {
   echo ""
-  echo "fastai help"
-  echo "-----------"
-  echo "fastai v100             - start an instance with tesla v100 gpu"
-  echo "fastai p100             - start an instance with tesla p100 gpu"
-  echo "fastai k80              - start an instance with tesla k80 gpu"
-  echo "fastai nogpu            - start an instance without a gpu"
-  echo "fastai kill             - kill the current fastai instance"
-  echo "fastai use-zone <zone>  - set the availability zone"
+  echo "fastai-shell"
+  echo "visit: https://github.com/arunoda/fastai-shell"
+  echo "----------------------------------------------"
+  echo ""
+  echo "fastai create             - create a fastai boot disk"
+  echo "fastai start              - start a new fastai instance"
+  echo "fastai kill               - kill the current fastai instance"
+  echo "fastai list-zones         - List supported availability zones"
+  echo "fastai switch-to <zone>   - switch-to the availability zone"
+  echo "fastai destroy            - destroy everything created by the fastai-shell"
   echo ""
 }
 
