@@ -28,8 +28,7 @@ cat > /tmp/update-fastai.sh <<EOL
 #!/bin/bash
 
 /opt/anaconda3/bin/conda update -y -c pytorch pytorch-nightly cuda92
-/opt/anaconda3/bin/conda update -y -c fastai torchvision-nightly
-/opt/anaconda3/bin/conda update -y -c fastai fastai
+/opt/anaconda3/bin/conda update -y -c fastai torchvision-nightly fastai
 
 cd /home/jupyter/tutorials/fastai/course-v3
 git checkout .
