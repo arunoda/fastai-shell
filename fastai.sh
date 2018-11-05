@@ -2,7 +2,7 @@
 
 set -e
 
-VERSION = "0.0.0"
+FASTAI_SHELL_VERSION="0.0.0"
 
 if [ -f ~/.fastai-zone ]; then
   current_zone=$(cat ~/.fastai-zone)
@@ -368,7 +368,7 @@ destroy () {
 }
 
 version () {
-  echo $VERSION
+  echo $FASTAI_SHELL_VERSION
 }
 
 help() {
