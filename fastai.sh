@@ -118,7 +118,7 @@ create_network () {
 
   if [[ "$has_network" == "0" ]]; then
     gcloud compute --project=$DEVSHELL_PROJECT_ID networks create fastai-net --subnet-mode=auto
-    gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules create allow-all --direction=INGRESS --priority=1000 --network=fastai-net --action=ALLOW --rules=all --source-ranges=0.0.0.0/0
+    gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules create allow-all-fastai-net --direction=INGRESS --priority=1000 --network=fastai-net --action=ALLOW --rules=all --source-ranges=0.0.0.0/0
   fi 
 }
 
@@ -128,7 +128,7 @@ delete_network () {
   set -e
 
   if [[ "$has_network" == "0" ]]; then
-    gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules -q delete allow-all
+    gcloud compute --project=$DEVSHELL_PROJECT_ID firewall-rules -q delete allow-all-fastai-net
     gcloud compute --project=$DEVSHELL_PROJECT_ID networks delete -q fastai-net
   fi
 }
