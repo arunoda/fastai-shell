@@ -165,8 +165,7 @@ create_boot_instance () {
       --boot-disk-size=50GB \
       --boot-disk-type=pd-ssd \
       --boot-disk-device-name=fastai-boot-1 \
-      --no-boot-disk-auto-delete \
-      --metadata="install-nvidia-driver=True"
+      --no-boot-disk-auto-delete
   else
     echo "There's an existing boot disk. Try 'fastai start' or 'fastai destroy'"
     exit 1
@@ -242,9 +241,6 @@ create () {
 
   echo "Waiting for SSH "
   wait_for_ssh "fastai-boot-1"
-
-  echo -ne "Waiting for the Nvidia Driver "
-  wait_for_command "fastai-boot-1" "nvidia-smi | grep K80"
 
   echo "Setting up the instance"
   setup_script="https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-instance.sh?__ts=$RANDOM"

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install the driver
+sudo /opt/deeplearning/install-driver.sh
+
 # Modify jupyter to use notebook instead of labs
 cat > /tmp/jupyter.service <<EOL
 [Unit]
