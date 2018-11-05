@@ -2,6 +2,8 @@
 
 set -e
 
+VERSION = "0.0.0"
+
 if [ -f ~/.fastai-zone ]; then
   current_zone=$(cat ~/.fastai-zone)
 else
@@ -47,6 +49,8 @@ create_disk_from_snapshot () {
 }
 
 list-zones () {
+  echo ""
+  echo "Current zone: $current_zone"
   echo ""
   for z in "${!GPUS_IN_ZONES[@]}"; do
     echo " * $z (available gpus: ${GPUS_IN_ZONES[$z]})"
@@ -257,7 +261,7 @@ create () {
 
 start () {
   echo ""
-  echo "Zone: $current_zone"
+  echo "Current zone: $current_zone"
   echo "Run one of the following commands:"
   echo ""
 
@@ -361,6 +365,10 @@ destroy () {
   kill
   delete_boot_disk
   delete_snapshot
+}
+
+version () {
+  echo $VERSION
 }
 
 help() {
