@@ -82,5 +82,4 @@ Simply run:
 
 ```
 curl -L https://git.io/fpeMb | bash
-source ~/.bashrc
 ```
