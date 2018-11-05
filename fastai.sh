@@ -8,6 +8,26 @@ else
   current_zone='us-west1-b'
 fi
 
+declare -A GPUS_IN_ZONES=(
+  ["us-central1-c"]="k80 p4 p100"
+  ["us-central1-a"]="k80 p4 v100"
+  ["us-west1-b"]="k80 p100 v100"
+)
+
+declare -A PRICE_FOR_GPU=(
+  ["k80"]="0.18"
+  ["p4"]="0.26"
+  ["p100"]="0.52"
+  ["v100"]="0.83"
+)
+
+declare -A SYSTEM_FOR_GPU=(
+  ["k80"]="4cpus, 15GB Ram"
+  ["p4"]="4cpus, 15GB Ram"
+  ["p100"]="8cpus, 30GB Ram"
+  ["v100"]="8cpus, 30GB Ram"
+)
+
 create_snapshot () {
   gcloud compute --project=$DEVSHELL_PROJECT_ID disks snapshot fastai-boot-1 --zone=$current_zone --snapshot-names=fastai-boot-1
 }
@@ -28,6 +48,30 @@ create_disk_from_snapshot () {
 
 switch-to () {
   zone=$1
+
+  if [[ "$zone" == "" ]]; then
+    echo ""
+    echo "Specify the zone as 'fastai switch-to <zone>'"
+    echo "
+    "
+    return 1
+  fi
+
+  if [[ "${GPUS_IN_ZONES[$zone]}" == "" ]]; then
+    echo ""
+    echo "Fastai shell does not support the zone: '$zone'"
+    echo "Use one of the following zones:"
+    echo ""
+
+    for z in "${!GPUS_IN_ZONES[@]}"; do
+      echo " * $z"
+    done
+
+    echo ""
+
+    return 1
+  fi
+
   echo "Kill the current instance, if exists"
   kill
 
@@ -201,6 +245,21 @@ create () {
   echo "Your fastai instance is ready."
   echo "Run 'fastai start' to get started"
   echo ""
+}
+
+start () {
+  echo ""
+  echo "Zone: $current_zone"
+  echo "Run one of the following commands:"
+  echo ""
+
+  gpus=(${GPUS_IN_ZONES[$current_zone]})
+  for gpu in ${gpus[@]}; do
+    echo " * fastai $gpu ($gpu gpu, ${SYSTEM_FOR_GPU[$gpu]} - \$${PRICE_FOR_GPU[$gpu]}/hour)"
+  done
+  echo " * fastai nogpu (1cpu, 3.75GB RAM - \$0.02/hour)"
+  echo ""
+
 }
 
 show_jupyter_link () {
