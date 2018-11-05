@@ -2,7 +2,7 @@
 
 set -e
 
-FASTAI_SHELL_VERSION="0.0.1"
+FASTAI_SHELL_VERSION="0.0.2"
 
 if [ -f ~/.fastai-zone ]; then
   current_zone=$(cat ~/.fastai-zone)
@@ -247,7 +247,7 @@ create () {
   wait_for_command "fastai-boot-1" "nvidia-smi | grep K80"
 
   echo "Setting up the instance"
-  setup_script="https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-instance.sh"
+  setup_script="https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-instance.sh?__ts=$RANDOM"
   gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone "fastai-boot-1" -- "curl $setup_script > /tmp/setup.sh && bash /tmp/setup.sh"
 
   echo "Deleting the boot instance"
