@@ -6,25 +6,25 @@ You can create an instance under a couple of minutes and this the cheapest among
 
 In the same time, you could enjoy a set of feature you won't find on other solutions. Those includes:
 
-* Create a GPU instance with Tesla K80 for just $0.18/hour
-* An instance with the high-end GPU Tesla v100 only cost you $0.83/hour
-* Create a node with No GPU for just $0.02/hour
-* Switch between different GPUs based on requirement and cost
+* Create a GPU instance with Tesla K80 for just **$0.18/hour**
+* An instance with the high-end GPU Tesla v100 only cost you **$0.83/hour**
+* Create a node with No GPU for just **$0.02/hour**
+* Switch between different GPUs based on your requirement and cost
 * Install new tools and save data (won't get deleted when switching)
 * No need to install anything locally, you just need a web browser
-* Fully automated process, no SSH or complex comands required
+* Fully automated process, no SSH or complex commands required
 * Switch your instance between different availability zones
 
 ## Installation
 
-Create an account on Google Cloud Platfrom.
+Create an account on Google Cloud Platfrom.<br/>
 (You'll get $300 credits for new signups.)
 
 Go to your project and open the Google Cloud shell as shown below:
 
 ![Google Cloud Shell](https://user-images.githubusercontent.com/50838/47280304-53882280-d5f3-11e8-92d0-c0625b728967.png)
 
-Then run the following commands:
+Then run following commands:
 
 ```
 curl -L https://git.io/fpeMb | bash
@@ -47,13 +47,14 @@ fastai start
 
 That'll show you a list of GPU options available for you. You can select a one based on your requirements and cost.
 
-After you have finished with your instance, you can kill with:
+After you have finished with your instance, run:
 
 ```
-fastai kill
+fastai stop
 ```
 
-This will delete the instance, but it'll keep the all the data you saved and any additional tool you installed.
+This will delete the instance and stop paying for the GPU.<br/>
+But it'll keep the all the data you saved and any additional tool you installed.
 
 In the next time, you can simply type `fastai start` and continue working with your project.
 

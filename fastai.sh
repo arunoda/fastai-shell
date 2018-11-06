@@ -84,8 +84,8 @@ switch-to () {
     return 1
   fi
 
-  echo "Kill the current instance, if exists"
-  kill
+  echo "Stop the current instance, if exists"
+  stop
 
   set +e
   disk_count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID disks list | grep -c fastai-boot-1)
@@ -345,7 +345,7 @@ nogpu () {
   start_instance "n1-standard-4" "nogpu"
 }
 
-kill () {
+stop () {
   set +e
   instance_count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep -c fastai-1)
   set -e
@@ -358,7 +358,7 @@ kill () {
 
 destroy () {
   delete_boot_instance
-  kill
+  stop
   delete_boot_disk
   delete_snapshot
 }
@@ -375,7 +375,7 @@ help() {
   echo ""
   echo "fastai create             - create a fastai boot disk"
   echo "fastai start              - start a new fastai instance"
-  echo "fastai kill               - kill the current fastai instance"
+  echo "fastai stop               - stop the current fastai instance"
   echo "fastai list-zones         - List supported availability zones"
   echo "fastai switch-to <zone>   - switch-to the availability zone"
   echo "fastai destroy            - destroy everything created by the fastai-shell"
