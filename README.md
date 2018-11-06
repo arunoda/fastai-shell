@@ -1,24 +1,22 @@
 # fastai-shell
 
-The best way to setup fastai on Google Cloud Platfrom.
+A workflow to setup and use [fastai](https://github.com/fastai/fastai) on Google Cloud Platfrom
 
-You can create an instance under a couple of minutes and this the cheapest among all other options to setup fastai.
+[![How to use fastai-shell](https://user-images.githubusercontent.com/50838/48072112-d3240d00-e201-11e8-860d-22bc5a9697ee.png)](https://www.youtube.com/watch?v=ui_y60ZtE5c)
 
-In the same time, you could enjoy a set of feature you won't find on other solutions. Those includes:
+Here is a set of features `fastai-shell` gives you:
 
-* Create a GPU instance with Tesla K80 for just **$0.18/hour**
-* An instance with the high-end GPU Tesla v100 only cost you **$0.83/hour**
-* Create a node with No GPU for just **$0.02/hour**
+* Use [preemptible](https://cloud.google.com/compute/pricing#gpus) instances to get the minimum price possible
 * Switch between different GPUs based on your requirement and cost
-* Install new tools and save data (won't get deleted when switching)
+* Keep data and tools you installed even when switching between GPUs
 * No need to install anything locally, you just need a web browser
 * Fully automated process, no SSH or complex commands required
 * Switch your instance between different availability zones
 
 ## Installation
 
-Create an account on Google Cloud Platfrom.<br/>
-(You'll get $300 credits for new signups.)
+Create an [account](https://cloud.google.com) on Google Cloud Platfrom.<br/>
+<sup>You'll get $300 credits for new signups.</sup>
 
 Go to your project and open the Google Cloud shell as shown below:
 
@@ -58,6 +56,21 @@ But it'll keep the all the data you saved and any additional tool you installed.
 
 In the next time, you can simply type `fastai start` and continue working with your project.
 
+## Cost
+
+Here we use preemptible instances. So the cost will be [very low](https://cloud.google.com/compute/pricing#gpus).<br/>
+After you type `fastai start`, you can select an instance and you can see the estimated hourly cost.<br/>
+(It's a range between $0.02/hour to $0.83/hour.)
+
+After you stop your instance with `fastai stop`, you won't get charged for the computing power and GPU.
+
+But here we use a 50GB SSD boot disk which won't get deleted with the `fastai stop` command.<br/>
+It'll cost around $9/month.
+
+> You can run `fastai destroy` to delete that disk.<br/>
+> But then, you need to run `fastai create` everytime when you need to work with your notebooks. <br/>
+> (This will destroy everything you saved and it'll take around 5-20 minutes to complete the `fastai create` process)
+
 ## Switching Zones
 
 With the demand for computing power in the current availability zone, sometimes Google won't let you create instances. Usually this will last for couple of hours and could happen at anytime.
@@ -70,8 +83,7 @@ To do that, select an availability zone by typing:
 fastai list-zones
 ```
 
-Then select a zone.
-(You can see a list of GPUs available in each zone)
+Now, you will see a list of GPUs available in each zone.
 
 Then select a zone and run:
 
@@ -79,14 +91,14 @@ Then select a zone and run:
 fastai switch-to <selected-zone>
 ```
 
-This will move your book disk to the selected zone and it'll take between 5 - 20 minutes to completed.
+This will move your boot disk to the selected zone and it'll take between 5 - 20 minutes to completed.
 
 After that, you can simply type `fastai start` and continue working with your models.
 
 ## Stay up to date
 
-This is a project which is constantly updating with your feedback.
-(But we won't do breaking changes at this point)
+This is a project which is constantly updating with your feedback.<br/>
+(But we won't do breaking changes at this point.)
 
 At anytime, you can run the following command to get the latest version:
 
@@ -94,8 +106,8 @@ At anytime, you can run the following command to get the latest version:
 curl -L https://git.io/fpeMb | bash
 ```
 
-You can check installed version by typing: `fastai version`
+You can check the installed version by typing: `fastai version`
 
 ## Help
 
-Simply type `fastai help` or create an issue.
+Simply type `fastai help` or create [an issue](https://github.com/arunoda/fastai-shell).
