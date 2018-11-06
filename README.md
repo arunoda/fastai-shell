@@ -15,14 +15,14 @@ Here is a set of features `fastai-shell` gives you:
 
 ## Installation
 
-Create an [account](https://cloud.google.com) on Google Cloud Platfrom.<br/>
-<sup>You'll get $300 credits for new signups.</sup>
+Create an [account](https://cloud.google.com) on Google Cloud Platform.<br/>
+<sup>You will get $300 credits for a new signup.</sup>
 
 Go to your project and open the Google Cloud shell as shown below:
 
 ![Google Cloud Shell](https://user-images.githubusercontent.com/50838/47280304-53882280-d5f3-11e8-92d0-c0625b728967.png)
 
-Then run following commands:
+Then run the following commands:
 
 ```
 curl -L https://git.io/fpeMb | bash
@@ -43,7 +43,7 @@ Then you can start that instance by running:
 fastai start
 ```
 
-That'll show you a list of GPU options available for you. You can select a one based on your requirements and cost.
+That will show you a list of GPU options available. You can select one based on your requirements and cost.
 
 After you have finished with your instance, run:
 
@@ -52,28 +52,28 @@ fastai stop
 ```
 
 This will delete the instance and stop paying for the GPU.<br/>
-But it'll keep the all the data you saved and any additional tool you installed.
+But it will keep the all of the data you saved and any additional tool you installed.
 
-In the next time, you can simply type `fastai start` and continue working with your project.
+The next time, you can simply type `fastai start` and continue working with your project.
 
 ## Cost
 
-Here we use preemptible instances. So the cost will be [very low](https://cloud.google.com/compute/pricing#gpus).<br/>
-After you type `fastai start`, you can select an instance and you can see the estimated hourly cost.<br/>
+Here we use preemptible instances, so the cost will be [very low](https://cloud.google.com/compute/pricing#gpus).<br/>
+After you type `fastai start`, you can select an instance and see the estimated hourly cost.<br/>
 (It's a range between $0.02/hour to $0.83/hour.)
 
 After you stop your instance with `fastai stop`, you won't get charged for the computing power and GPU.
 
 But here we use a 50GB SSD boot disk which won't get deleted with the `fastai stop` command.<br/>
-It'll cost around $9/month.
+It will cost around $8.50/month.
 
 > You can run `fastai destroy` to delete that disk.<br/>
 > But then, you need to run `fastai create` everytime when you need to work with your notebooks. <br/>
-> (This will destroy everything you saved and it'll take around 5-20 minutes to complete the `fastai create` process)
+> (This will destroy everything you saved and it will take around 5-20 minutes to complete the `fastai create` process)
 
 ## Switching Zones
 
-With the demand for computing power in the current availability zone, sometimes Google won't let you create instances. Usually this will last for couple of hours and could happen at anytime.
+With the demand for computing power in the current availability zone, sometimes Google won't let you create instances. Usually this will last for a couple of hours and could happen at anytime.
 
 Luckily with `fastai-shell`, you can switch your instance to a different zone and continue working with your models.
 
@@ -91,13 +91,13 @@ Then select a zone and run:
 fastai switch-to <selected-zone>
 ```
 
-This will move your boot disk to the selected zone and it'll take between 5 - 20 minutes to completed.
+This will move your boot disk to the selected zone and it will take between 5 - 20 minutes to complete.
 
 After that, you can simply type `fastai start` and continue working with your models.
 
 ## Stay up to date
 
-This is a project which is constantly updating with your feedback.<br/>
+This is a project that is constantly updating with your feedback.<br/>
 (But we won't do breaking changes at this point.)
 
 At anytime, you can run the following command to get the latest version:
