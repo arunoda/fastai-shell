@@ -1,19 +1,26 @@
 # fastai-shell
 
-The best and easiest way to setup fastai on Google Cloud Platfrom with the Google Cloud shell.
+The best way to setup fastai on Google Cloud Platfrom.
 
-## Workflow
+You can create an instance under a couple of minutes and this the cheapest among all other options to setup fastai.
 
-With the fastai-shell, you can create a fastai instance. In that process, it'll create a boot disk(50GB SSD) for fastai.
+In the same time, you could enjoy a set of feature you won't find on other solutions. Those includes:
 
-Then whenever you needed, you can start an instance with a GPU of your choice. You can switch between different GPU types and even run your instance without a GPU.
-
-All these instances are preemptive instances which are very cost effective.
-(The lowest level GPU instance costs $0.18/hour while the highest level GPU instance costs only $0.83/hour)
+* Create a GPU instance with Tesla K80 for just $0.18/hour
+* An instance with the high-end GPU Tesla v100 only cost you $0.83/hour
+* Create a node with No GPU for just $0.02/hour
+* Switch between different GPUs based on requirement and cost
+* Install new tools and save data (won't get deleted when switching)
+* No need to install anything locally, you just need a web browser
+* Fully automated process, no SSH or complex comands required
+* Switch your instance between different availability zones
 
 ## Installation
 
-Open the cloud shell for your project.
+Create an account on Google Cloud Platfrom.
+(You'll get $300 credits for new signups.)
+
+Go to your project and open the Google Cloud shell as shown below:
 
 ![Google Cloud Shell](https://user-images.githubusercontent.com/50838/47280304-53882280-d5f3-11e8-92d0-c0625b728967.png)
 
@@ -38,48 +45,56 @@ Then you can start that instance by running:
 fastai start
 ```
 
-That'll show you a list of GPU options available for you. You can select a one based on your needed and the hourly cost.
+That'll show you a list of GPU options available for you. You can select a one based on your requirements and cost.
 
-After you have finished learning, you can run:
+After you have finished with your instance, you can kill with:
 
 ```
 fastai kill
 ```
 
-This will delete the instance but it'll keep the boot disk and all the data.
+This will delete the instance, but it'll keep the all the data you saved and any additional tool you installed.
 
-Next time, you can simply type `fastai start` and continue learning.
+In the next time, you can simply type `fastai start` and continue working with your project.
 
 ## Switching Zones
 
-With the demand for computing power, you might not be able to create an instance at some point.
+With the demand for computing power in the current availability zone, sometimes Google won't let you create instances. Usually this will last for couple of hours and could happen at anytime.
 
-At those times, you can switch to a different zone and continue learning. In this process, fastai-shell will migrate your boot disk to the target zone. So, you don't need to setup your fastai instance again.
+Luckily with `fastai-shell`, you can switch your instance to a different zone and continue working with your models.
 
-To do that, first of all get a list of available zones fastai-shell supports:
+To do that, select an availability zone by typing:
 
 ```
 fastai list-zones
 ```
 
-Then select and zone and run:
+Then select a zone.
+(You can see a list of GPUs available in each zone)
+
+Then select a zone and run:
 
 ```
 fastai switch-to <selected-zone>
 ```
 
-This will take between 5 - 20 minutes to move your boot disk to the selected zone. 
+This will move your book disk to the selected zone and it'll take between 5 - 20 minutes to completed.
 
-After that, you can simply type `fastai start` and continue learning.
+After that, you can simply type `fastai start` and continue working with your models.
 
-## Help
+## Stay up to date
 
-Simply run `fastai help`
+This is a project which is constantly updating with your feedback.
+(But we won't do breaking changes at this point)
 
-## Update fastai-shell
-
-Simply run:
+At anytime, you can run the following command to get the latest version:
 
 ```
 curl -L https://git.io/fpeMb | bash
 ```
+
+You can check installed version by typing: `fastai version`
+
+## Help
+
+Simply type `fastai help` or create an issue.
