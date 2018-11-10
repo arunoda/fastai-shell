@@ -76,13 +76,15 @@ It will cost around $8.50/month.
 Sometimes the current availability zone has no resources to start an instance. In that case, we should try another zone.<br/>
 Here's a simple utilty to test that.
 
-First of all, list zones and select a zone and a gpu:
+First of all invoke the folling command:
 
 ```
 fastai list-zones
 ```
 
-Then invoke this command:
+Then select a zone and a gpu.
+
+After that invoke this command:
 
 ```
 fastai test-zone <zone> <gpu>
