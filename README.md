@@ -71,7 +71,7 @@ It will cost around $8.50/month.
 > But then, you need to run `fastai create` everytime when you need to work with your notebooks. <br/>
 > (This will destroy everything you saved and it will take around 5-20 minutes to complete the `fastai create` process)
 
-## Test Zone's availability
+## Test Availability of a Zone
 
 Sometimes the current availability zone has no resources to start an instance. In that case, we should try another zone.<br/>
 Here's a simple utilty to test that.
