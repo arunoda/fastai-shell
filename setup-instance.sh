@@ -42,3 +42,6 @@ sudo chmod +x /home/jupyter/update-fastai.sh
 ## Update fastai
 sudo /home/jupyter/update-fastai.sh
 sudo chown -R jupyter /home/jupyter/tutorials/fastai/course-v3
+
+## Add no password sudo support
+echo 'jupyter ALL=(ALL) NOPASSWD:ALL' | sudo EDITOR='tee -a' visudo -f /etc/sudoers.d/90-cloudimg-ubuntu
