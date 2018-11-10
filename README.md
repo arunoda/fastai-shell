@@ -71,6 +71,25 @@ It will cost around $8.50/month.
 > But then, you need to run `fastai create` everytime when you need to work with your notebooks. <br/>
 > (This will destroy everything you saved and it will take around 5-20 minutes to complete the `fastai create` process)
 
+## Test Zone's availability
+
+Sometimes the current availability zone has no resources to start an instance. In that case, we should try another zone.<br/>
+Here's a simple utilty to test that.
+
+First of all, list zones and select a zone and a gpu:
+
+```
+fastai list-zones
+```
+
+Then invoke this command:
+
+```
+fastai test-zone <zone> <gpu>
+```
+
+If this commands throws an error, try a different zone/gpu combination.
+
 ## Switching Zones
 
 With the demand for computing power in the current availability zone, sometimes Google won't let you create instances. Usually this will last for a couple of hours and could happen at anytime.
