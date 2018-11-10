@@ -36,6 +36,43 @@ declare -A SYSTEM_FOR_GPU=(
   ["v100"]="8cpus, 30GB Ram"
 )
 
+test-zone () {
+  zone=$1
+  gpu=$2
+
+  set +e
+  count=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep -c zone-tester)
+  set -e
+
+  if [[ "$count" == "1" ]]; then
+    echo "Delete existing zone-tester instance"
+    zone_for_exiting=$(gcloud compute --project=$DEVSHELL_PROJECT_ID instances list | grep zone-tester | sed 's/  */ /g' | cut -d ' ' -f2)
+    gcloud compute --project=$DEVSHELL_PROJECT_ID -q instances delete zone-tester --zone $zone_for_exiting
+  fi
+
+  echo "Creating zone-tester instance for zone: $zone with GPU: $gpu"
+  gcloud compute instances create zone-tester \
+      --project=$DEVSHELL_PROJECT_ID \
+      --zone=$zone \
+      --subnet=fastai-net \
+      --network-tier=PREMIUM \
+      --machine-type="n1-highcpu-4" \
+      --accelerator="type=nvidia-tesla-$gpu,count=1" \
+      --image-family="pytorch-1-0-cu92-experimental" \
+      --image-project=deeplearning-platform-release \
+      --maintenance-policy=TERMINATE \
+      --boot-disk-size=30GB \
+      --boot-disk-type=pd-ssd \
+      --boot-disk-device-name=zone-tester
+
+  echo ""
+  echo "The zone: $zone has enough resources for the $gpu GPU."
+  echo ""
+
+  echo "Deleting zone-tester instance"
+  gcloud compute --project=$DEVSHELL_PROJECT_ID -q instances delete zone-tester --zone=$zone
+}
+
 create_snapshot () {
   gcloud compute --project=$DEVSHELL_PROJECT_ID disks snapshot fastai-boot-1 --zone=$current_zone --snapshot-names=fastai-boot-1
 }
@@ -379,16 +416,16 @@ help() {
   echo "visit: https://github.com/arunoda/fastai-shell"
   echo "----------------------------------------------"
   echo ""
-  echo "fastai create             - create a fastai boot disk"
-  echo "fastai start              - start a new fastai instance"
-  echo "fastai stop               - stop the current fastai instance"
-  echo "fastai list-zones         - List supported availability zones"
-  echo "fastai switch-to <zone>   - switch-to the availability zone"
-  echo "fastai destroy            - destroy everything created by the fastai-shell"
+  echo "fastai create                 - create a fastai boot disk"
+  echo "fastai start                  - start a new fastai instance"
+  echo "fastai stop                   - stop the current fastai instance"
+  echo "fastai list-zones             - List supported availability zones"
+  echo "fastai switch-to <zone>       - switch-to the availability zone"
+  echo "fastai destroy                - destroy everything created by the fastai-shell"
+  echo "fastai test-zone <zone> <gpu> - test whether we can create instances in the given zone"
   echo ""
 }
 
 command=$1
-arg1=$2
 
-$command $2
+$command $2 $3 $4 $5
