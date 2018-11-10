@@ -14,7 +14,12 @@ declare -A GPUS_IN_ZONES=(
   ["us-central1-c"]="k80 p4 p100"
   ["us-central1-a"]="k80 p4 v100"
   ["us-west1-b"]="k80 p100 v100"
+  ["us-west2-b"]="p4"
   ["us-west2-c"]="p4"
+  ["europe-west1-b"]="k80 p100"
+  ["europe-west1-d"]="k80 p100"
+  ["europe-west4-a"]="p100 v100"
+  ["europe-west4-b"]="p4 v100"
 )
 
 declare -A PRICE_FOR_GPU=(
