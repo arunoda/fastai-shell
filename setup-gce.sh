@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
 sudo add-apt-repository -y ppa:graphics-drivers/ppa
 sudo apt install -y nvidia-driver-396
 
