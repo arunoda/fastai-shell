@@ -57,8 +57,7 @@ cat > ~/update-fastai.sh <<EOL
 
 source activate fastai-v1
 conda update -y -c pytorch pytorch-nightly cuda92
-conda update -y -c fastai torchvision-nightly
-conda update -y -c fastai fastai
+conda update -y -c fastai torchvision-nightly fastai
 
 sudo systemctl restart jupyter
 EOL
