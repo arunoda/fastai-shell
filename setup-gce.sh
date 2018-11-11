@@ -19,10 +19,9 @@ conda create -y --name fastai-v1 python=3.7
 source activate fastai-v1
 
 conda install -y -c pytorch pytorch-nightly cuda92
-conda install -y -c fastai torchvision-nightly
-conda install -y -c fastai fastai
+conda install -y -c fastai torchvision-nightly fastai
+conda install -y ipykernel
 
-source activate fastai-v1
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
 
 git clone https://github.com/fastai/course-v3.git
@@ -39,7 +38,8 @@ Type=simple
 Restart=always
 RestartSec=1
 User=$USER
-ExecStart=$HOME/anaconda3/bin/jupyter lab --ip 0.0.0.0 --notebook-dir $HOME '--KernelSpecManager.whitelist=["fastai-v1"]'
+WorkingDirectory=$HOME
+ExecStart=$HOME/anaconda3/bin/jupyter notebook --config=$HOME/.jupyter/jupyter_notebook_config.py
 
 [Install]
 WantedBy=multi-user.target
@@ -48,6 +48,18 @@ EOL
 sudo mv /tmp/jupyter.service /lib/systemd/system/jupyter.service
 sudo systemctl start jupyter.service
 sudo systemctl enable jupyter.service
+
+## Write the jupyter config
+mkdir -p ~/.jupyter
+cat > ~/.jupyter/jupyter_notebook_config.py <<EOL
+c.NotebookApp.notebook_dir = "$HOME"
+c.NotebookApp.password = ''
+c.NotebookApp.token = ''
+c.NotebookApp.ip = '0.0.0.0'
+c.NotebookApp.port = 8080
+
+c.KernelSpecManager.whitelist = ["fastai-v1"]
+EOL
 
 ## Add the update fastai script
 cat > ~/update-fastai.sh <<EOL
@@ -61,5 +73,3 @@ sudo systemctl restart jupyter
 EOL
 
 chmod +x ~/update-fastai.sh
-
-sudo reboot

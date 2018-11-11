@@ -202,8 +202,8 @@ create_boot_instance () {
       --network-tier=PREMIUM \
       --machine-type="n1-highcpu-8" \
       --accelerator="type=nvidia-tesla-k80,count=1" \
-      --image-family="pytorch-1-0-cu92-experimental" \
-      --image-project=deeplearning-platform-release \
+      --image-family="ubuntu-1804-lts" \
+      --image-project=ubuntu-os-cloud \
       --maintenance-policy=TERMINATE \
       --boot-disk-size=50GB \
       --boot-disk-type=pd-ssd \
@@ -286,7 +286,7 @@ create () {
   wait_for_ssh "fastai-boot-1"
 
   echo "Setting up the instance"
-  setup_script="https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-instance.sh?__ts=$RANDOM"
+  setup_script="https://raw.githubusercontent.com/arunoda/fastai-shell/master/setup-gce.sh?__ts=$RANDOM"
   gcloud compute --project $DEVSHELL_PROJECT_ID ssh --zone $current_zone "fastai-boot-1" -- "curl $setup_script > /tmp/setup.sh && bash /tmp/setup.sh"
 
   echo "Deleting the boot instance"
