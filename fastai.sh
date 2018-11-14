@@ -332,7 +332,7 @@ start_instance() {
   # If the machine already started, simply show the start script
   if [[ "$instance_count" == "1" ]]; then
     echo "The fastai instance is already started"
-    echo "To change the instance type, first kill it with 'fastai kill'"
+    echo "To change the instance type, first stop it with 'fastai stop'"
     echo "Otherwise here's the URL:"
     show_jupyter_link
     return 0
