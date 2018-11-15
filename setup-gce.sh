@@ -73,3 +73,6 @@ sudo systemctl restart jupyter
 EOL
 
 chmod +x ~/update-fastai.sh
+
+# allow users to install stuff to fastai-v1 conda env directly.
+echo "source activate fastai-v1" >> ~/.bashrc
