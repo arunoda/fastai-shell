@@ -58,7 +58,7 @@ test-zone () {
       --network-tier=PREMIUM \
       --machine-type="n1-highcpu-4" \
       --accelerator="type=nvidia-tesla-$gpu,count=1" \
-      --image-family="pytorch-1-0-cu92-experimental" \
+      --image-family="pytorch-latest-gpu" \
       --image-project=deeplearning-platform-release \
       --maintenance-policy=TERMINATE \
       --boot-disk-size=30GB \
