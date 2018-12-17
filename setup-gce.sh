@@ -18,8 +18,7 @@ conda create -y --name fastai-v1 python=3.7
 
 source activate fastai-v1
 
-conda install -y -c pytorch pytorch-nightly cuda92
-conda install -y -c fastai torchvision-nightly fastai
+conda install -c pytorch -c fastai fastai
 conda install -y ipykernel
 
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
@@ -66,8 +65,7 @@ cat > ~/update-fastai.sh <<EOL
 #!/bin/bash
 
 source activate fastai-v1
-conda update -y -c pytorch pytorch-nightly cuda92
-conda update -y -c fastai torchvision-nightly fastai
+conda install -c pytorch -c fastai fastai
 
 sudo systemctl restart jupyter
 EOL
