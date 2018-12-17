@@ -18,7 +18,7 @@ conda create -y --name fastai-v1 python=3.7
 
 source activate fastai-v1
 
-conda install -c pytorch -c fastai fastai
+conda install -y -c pytorch -c fastai fastai
 conda install -y ipykernel
 
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
