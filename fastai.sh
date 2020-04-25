@@ -349,8 +349,7 @@ start_instance() {
       --machine-type=$machine_type\
       --no-restart-on-failure \
       --maintenance-policy=TERMINATE \
-      --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes \
-      --preemptible
+      --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes
   else
     gcloud compute instances create fastai-1 \
       --project=$DEVSHELL_PROJECT_ID \
@@ -361,8 +360,7 @@ start_instance() {
       --accelerator="type=$gpu_type,count=1" \
       --no-restart-on-failure \
       --maintenance-policy=TERMINATE \
-      --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes \
-      --preemptible
+      --disk=name=fastai-boot-1,device-name=fastai-boot-1,mode=rw,boot=yes
   fi
 
   show_jupyter_link
