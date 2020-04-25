@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo add-apt-repository -y ppa:graphics-drivers/ppa
 sudo apt update
 sudo apt install -y nvidia-driver-440
 
@@ -14,7 +14,7 @@ set -e
 
 # This will allow us to use conda.
 # source ~/.bashrc has no effect here: https://stackoverflow.com/a/43660876/457224
-export PATH="$HOME/anaconda3/bin:$PATH"
+export PATH="$HOME/anaconda/bin:$PATH"
 
 conda create -y --name fastai-v1 python=3.7
 
