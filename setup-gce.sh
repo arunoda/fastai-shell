@@ -66,9 +66,13 @@ EOL
 cat > ~/update-fastai.sh <<EOL
 #!/bin/bash
 
+export PATH=$HOME/anaconda3/bin:$PATH
 source activate fastai-v1
 conda install -c pytorch
 pip install fastai2
+pip install nbdev
+conda install pyarrow
+pip install pydicom kornia opencv-python scikit-image graphviz azure azure-cognitiveservices-vision-computervision azure-cognitiveservices-search-websearch azure-cognitiveservices-search-imagesearch "ipywidgets>=7.5.1" sentencepiece scikit_learn
 
 sudo systemctl restart jupyter
 EOL
