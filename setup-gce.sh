@@ -1,19 +1,15 @@
 #!/bin/bash
 set -e
 
-curl -O http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-repo-ubuntu1804_10.0.130-1_amd64.deb
-sudo dpkg -i cuda-repo-ubuntu1804_10.0.130-1_amd64.deb
-sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
-
-sudo apt-get update
-sudo apt-get install cuda
-
-nvidia-smi
+sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt update
+sudo apt install -y nvidia-driver-440
 
 # This will use python command at the end and there's no such command.
 # So, we need to ignore that command.
 set +e
-curl https://conda.ml | bash
+wget https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
+bash Anaconda3-2019.10-Linux-x86_64.sh -b -p $HOME/anaconda
 set -e
 
 # This will allow us to use conda.
@@ -29,7 +25,7 @@ conda install -y ipykernel
 
 python -m ipykernel install --user --name fastai-v1 --display-name "fastai-v1"
 
-git clone https://github.com/fastai/course-v3.git
+git clone https://github.com/fastai/course-v4.git
 
 ## Install the start script
 cat > /tmp/jupyter.service <<EOL
@@ -71,7 +67,8 @@ cat > ~/update-fastai.sh <<EOL
 #!/bin/bash
 
 source activate fastai-v1
-conda install -c pytorch -c fastai fastai
+conda install -c pytorch
+pip install fastai2
 
 sudo systemctl restart jupyter
 EOL
