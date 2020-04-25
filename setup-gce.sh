@@ -9,12 +9,12 @@ sudo apt install -y nvidia-driver-440
 # So, we need to ignore that command.
 set +e
 wget https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh
-bash Anaconda3-2019.10-Linux-x86_64.sh -b -p $HOME/anaconda
+bash Anaconda3-2019.10-Linux-x86_64.sh -b -p $HOME/anaconda3
 set -e
 
 # This will allow us to use conda.
 # source ~/.bashrc has no effect here: https://stackoverflow.com/a/43660876/457224
-export PATH="$HOME/anaconda/bin:$PATH"
+export PATH="$HOME/anaconda3/bin:$PATH"
 
 conda create -y --name fastai-v1 python=3.7
 
