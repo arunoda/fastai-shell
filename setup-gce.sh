@@ -3,7 +3,7 @@ set -e
 
 sudo add-apt-repository -y ppa:graphics-drivers/ppa
 sudo apt update
-sudo apt install -y nvidia-driver-515
+sudo apt install -y nvidia-driver-470
 
 # This will use python command at the end and there's no such command.
 # So, we need to ignore that command.
